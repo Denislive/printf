@@ -13,6 +13,7 @@ int _printf(const char *format, ...)
 	va_list args;
 	int printed_chars = 0;
 	char *str;
+	int num, temp, digits, divisor, j;
 
 	va_start(args, format);
 
@@ -41,13 +42,46 @@ int _printf(const char *format, ...)
 						str++;
 					}
 					break;
+				case 'd':
+				case 'i':
+					num = va_arg(args, int);
+					temp = num;
+					digits = 0;
+
+					if (num == 0)
+					{
+						_putchar('0');
+						printed_chars++;
+					}
+					else if (num < 0)
+					{
+						_putchar('-');
+						printed_chars++;
+						num *= -1;
+						temp *= -1;
+					}
+
+					while (temp != 0)
+					{
+						temp /= 10;
+						digits++;
+					}
+
+					divisor = 1;
+					for (j = 1; j < digits; j++)
+						divisor *= 10;
+
+					while (divisor != 0)
+					{
+						_putchar((num / divisor) + '0');
+						printed_chars++;
+						num %= divisor;
+						divisor /= 10;
+					}
+					break;
 				case '%':
 					_putchar('%');
 					printed_chars++;
-					break;
-				case 'd':
-				case 'i':
-					printed_chars += printf("%d", va_arg(args, int));
 					break;
 				default:
 					_putchar('%');
