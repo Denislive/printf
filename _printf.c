@@ -118,7 +118,55 @@ int print_binary(va_list args)
 }
 
 /**
- * _printf - Produces output according to a format.
+ * print_unsigned_integer - Print an unsigned integer.
+ * @args: The va_list that contains the unsigned integer to print.
+ * @base: The base to be used for printing (e.g., 10 for decimal).
+ * @uppercase: Flag to indicate if the output should be uppercase (X).
+ *
+ * Return: The number of characters printed.
+ */
+int print_unsigned_integer(va_list args, int base, int uppercase)
+{
+    unsigned int num = va_arg(args, unsigned int);
+    unsigned int temp = num;
+    int digits = 0;
+    int divisor = 1;
+    int j;
+    int printed_chars = 0;
+
+    if (num == 0)
+    {
+        _putchar('0');
+        return (1);
+    }
+
+    while (temp != 0)
+    {
+        temp /= base;
+        digits++;
+    }
+
+    for (j = 1; j < digits; j++)
+        divisor *= base;
+
+    while (divisor != 0)
+    {
+        int digit = num / divisor;
+        if (digit < 10)
+            _putchar(digit + '0');
+        else
+            _putchar((digit - 10) + (uppercase ? 'A' : 'a'));
+
+        printed_chars++;
+        num %= divisor;
+        divisor /= base;
+    }
+
+    return (printed_chars);
+}
+
+/*
+ *_printf - Produces output according to a format.
  * @format: The character string containing zero or more directives.
  *
  * Return: The number of characters printed (excluding the null byte).
@@ -158,6 +206,18 @@ int _printf(const char *format, ...)
 					}
 					break;
 				case 'd':
+				case 'u':
+					printed_chars += print_unsigned_integer(args, 10, 0);
+					break;
+				case 'o':
+					printed_chars += print_unsigned_integer(args, 8, 0);
+					break;
+				case 'x':
+					printed_chars += print_unsigned_integer(args, 16, 0);
+					break;
+				case 'X':
+					printed_chars += print_unsigned_integer(args, 16, 1);
+					break;
 				case 'b':
 					printed_chars += print_binary(args);
 					break;
