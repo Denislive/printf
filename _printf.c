@@ -85,6 +85,39 @@ int print_integer(va_list args)
 }
 
 /**
+ * print_binary - Print an unsigned integer in binary format.
+ * @args: The va_list that contains the integer to print in binary.
+ *
+ * Return: The number of characters printed.
+ */
+int print_binary(va_list args)
+{
+    unsigned int num = va_arg(args, unsigned int);
+    int printed_chars = 0;
+    unsigned int mask = 1 << (sizeof(unsigned int) * 8 - 1);
+    int found_one = 0;
+
+    while (mask > 0)
+    {
+        if (num & mask || found_one)
+        {
+            _putchar((num & mask) ? '1' : '0');
+            printed_chars++;
+            found_one = 1;
+        }
+        mask >>= 1;
+    }
+
+    if (!found_one)
+    {
+        _putchar('0');
+        printed_chars++;
+    }
+
+    return (printed_chars);
+}
+
+/**
  * _printf - Produces output according to a format.
  * @format: The character string containing zero or more directives.
  *
@@ -125,6 +158,9 @@ int _printf(const char *format, ...)
 					}
 					break;
 				case 'd':
+				case 'b':
+					printed_chars += print_binary(args);
+					break;
 				case 'i':
 					num = va_arg(args, int);
 					temp = num;
