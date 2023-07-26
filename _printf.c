@@ -256,7 +256,14 @@ int _printf(const char *format, ...)
 					}
 					break;
 				case '%':
-					_putchar('%');
+					format++;
+					if (*format == '\0')
+					{
+						write(1, "%", 1);
+						printed_chars++;
+						break;
+					}
+					write(1, "%", 1);
 					printed_chars++;
 					break;
 				default:
