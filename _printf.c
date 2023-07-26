@@ -49,7 +49,6 @@ int print_string(va_list args)
 int print_integer(va_list args)
 {
 	int num = va_arg(args, int);
-	int temp = num;
 	int digits = 0;
 	int divisor = 1;
 	int j;
@@ -64,7 +63,6 @@ int print_integer(va_list args)
 	{
 		_putchar('-');
 		num *= -1;
-		temp *= -1;
 		digits++;
 	}
 
